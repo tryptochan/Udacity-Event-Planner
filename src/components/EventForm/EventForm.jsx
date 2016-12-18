@@ -35,6 +35,13 @@ const styles = {
   },
   submit: {
     marginTop: 20
+  },
+  timeErr: {
+    position: 'relative',
+    bottom: 2,
+    fontSize: 12,
+    lineHeight: '12px',
+    color: '#f44336'
   }
 };
 
@@ -51,7 +58,8 @@ class EventForm extends React.Component {
       endTime: null,
       guests: '',
       location: '',
-      message: ''
+      message: '',
+      timeErr: false
     };
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
@@ -69,6 +77,15 @@ class EventForm extends React.Component {
   componentWillMount() {
     const user = document.cookie.replace(/(?:(?:^|.*;\s*)user\s*\=\s*([^;]*).*$)|^.*$/, '$1');
     if (user === '') { hashHistory.push('/'); }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.startDate !== this.state.startDate ||
+        prevState.startTime !== this.state.startTime ||
+        prevState.endDate !== this.state.endDate ||
+        prevState.endTime !== this.state.endTime) {
+      this.validateDateTime();
+    }
   }
 
   handleNameChange(event) {
@@ -132,13 +149,32 @@ class EventForm extends React.Component {
     hashHistory.push('/list');
   }
 
+  validateDateTime() {
+    if (!this.state.startTime || !this.state.startDate || !this.state.endTime
+      || !this.state.endDate) {
+      return
+    }
+    if (this.state.startDate.getDate() === this.state.endDate.getDate()
+      && this.state.startTime - this.state.endTime > 0) {
+      this.setState({timeErr: true});
+    } else {
+      this.setState({timeErr: false});
+    }
+
+  }
+
   render() {
     let ready = false;
     if (this.state.name !== '' && this.state.type !== '' && this.state.host !== ''
           && this.state.startDate !== null && this.state.startTime !== null
           && this.state.endDate !== null & this.state.endTime !== null
-          && this.state.guests !== '' && this.state.location !== '') {
+          && this.state.guests !== '' && this.state.location !== ''
+          && !this.state.timeErr) {
       ready = true;
+    }
+    let timeErr;
+    if (this.state.timeErr) {
+      timeErr = <div style={styles.timeErr}>End time should be later than start time.</div>
     }
     return (
       <div>
@@ -221,6 +257,7 @@ class EventForm extends React.Component {
             aria-required={true}
             required
           />
+          {timeErr}
           <br />
           <TextField
             style={styles.text}
