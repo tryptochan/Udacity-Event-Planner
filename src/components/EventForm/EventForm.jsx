@@ -188,6 +188,7 @@ class EventForm extends React.Component {
             value={this.state.name}
             floatingLabelText="Event Name"
             aria-required={true}
+            autoFocus
             required
           />
           <TextField

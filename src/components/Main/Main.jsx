@@ -22,6 +22,7 @@ class Main extends React.Component {
     };
     this.handleTab = this.handleTab.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleFocus= this.handleFocus.bind(this);
   }
 
   componentWillMount() {
@@ -50,6 +51,14 @@ class Main extends React.Component {
     }
   }
 
+  handleFocus(tab) {
+    if (tab.props.id === 'log-tab') {
+      this.logRef.focus();
+    } else if (tab.props.id === 'reg-tab') {
+      this.regRef.focus();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -67,6 +76,7 @@ class Main extends React.Component {
           data-value="reg"
           role="tab"
           id="reg-tab"
+          onActive={this.handleFocus}
           aria-expanded={this.state.active === 'reg'}
           aria-selected={this.state.active === 'reg'}
           aria-controls="reg-tabpanel"
@@ -76,6 +86,7 @@ class Main extends React.Component {
             id="reg-tabpanel"
             aria-labelledby="reg-tab"
             visible={this.state.active === 'reg'}
+            ref={(input) => {this.regRef = input;}}
           />
         </Tab>
         <Tab
@@ -84,6 +95,7 @@ class Main extends React.Component {
           data-value="log"
           role="tab"
           id="log-tab"
+          onActive={this.handleFocus}
           aria-expanded={this.state.active === 'log'}
           aria-selected={this.state.active === 'log'}
           aria-controls="log-tabpanel"
@@ -93,6 +105,7 @@ class Main extends React.Component {
             id="log-tabpanel"
             aria-labelledby="log-tab"
             visible={this.state.active === 'log'}
+            ref={(input) => {this.logRef = input;}}
           />
         </Tab>
       </Tabs>

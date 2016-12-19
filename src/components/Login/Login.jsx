@@ -39,6 +39,7 @@ class Login extends React.Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.focus = this.focus.bind(this);
   }
 
   handleEmailChange(event) {
@@ -71,6 +72,10 @@ class Login extends React.Component {
     hashHistory.push('/create');
   }
 
+  focus() {
+    this.focusInput.focus();
+  }
+
   render() {
     let {visible, ...others} = this.props;
     let ready = false;
@@ -92,6 +97,7 @@ class Login extends React.Component {
             autoComplete="email"
             aria-required={true}
             tabIndex={visible-1}
+            ref={(input)=>{this.focusInput = input;}}
             required
           />
           <TextField

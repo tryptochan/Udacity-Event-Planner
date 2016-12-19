@@ -45,6 +45,7 @@ class Registration extends React.Component {
     this.handleOrganizationChange = this.handleOrganizationChange.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.focus = this.focus.bind(this);
   }
 
 
@@ -131,6 +132,10 @@ class Registration extends React.Component {
     hashHistory.push('/create');
   }
 
+  focus() {
+    this.focusInput.focus();
+  }
+
   render() {
     let {visible, ...others} = this.props
     let ready = false;
@@ -152,6 +157,7 @@ class Registration extends React.Component {
             autoFocus
             aria-required={true}
             tabIndex={visible-1}
+            ref={(input)=>{this.focusInput = input;}}
             required
           />
           <TextField
