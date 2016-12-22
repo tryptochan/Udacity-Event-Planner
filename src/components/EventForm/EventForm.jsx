@@ -152,10 +152,11 @@ class EventForm extends React.Component {
   validateDateTime() {
     if (!this.state.startTime || !this.state.startDate || !this.state.endTime
       || !this.state.endDate) {
-      return
+      return;
     }
-    if (this.state.startDate.getDate() === this.state.endDate.getDate()
-      && this.state.startTime - this.state.endTime > 0) {
+    if (this.state.startDate.toDateString() === this.state.endDate.toDateString()
+        && this.state.startTime - this.state.endTime > 0
+        || this.state.startDate.getTime() > this.state.endDate.getTime()) {
       this.setState({timeErr: true});
     } else {
       this.setState({timeErr: false});
